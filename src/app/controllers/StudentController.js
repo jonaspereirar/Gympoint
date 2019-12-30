@@ -54,7 +54,7 @@ class StudentController {
     });
 
     if (!userExists) {
-      return res.status(400).json({ error: 'Atleta already not exists.' });
+      return res.status(400).json({ error: 'Atleta not exists.' });
     }
 
     const { id, name, email, age, weight, height } = await userExists.update(
