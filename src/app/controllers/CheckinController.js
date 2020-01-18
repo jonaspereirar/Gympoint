@@ -21,7 +21,7 @@ class CheckinController {
 
     if (checkinsCounter >= 5)
       return res.status(400).json({
-        error: 'You have reached the maximum check in limit of the week',
+        error: 'Exhausted your chekins limit',
       });
 
     const checkin = await Checkin.create({
@@ -30,6 +30,32 @@ class CheckinController {
 
     return res.status(201).json(checkin);
   }
-}
 
+  async index(req, res) {
+    const page = parseInt(req.query.page || 1, 10);
+    const perPage = parseInt(req.query.perPage || 10, 10);
+    const skip = (page - 1) * perPage;
+
+    const totalCheckins = await Checkin.find({
+      student_id: req.params.id,
+    }).count();
+
+    const checkin = await Checkin.find({
+      student_id: req.params.id,
+    })
+      .skip(skip)
+      .limit(perPage)
+      .sort({ createdAt: 'desc' });
+
+    const totalPage = Math.ceil(totalCheckins / perPage);
+
+    return res.json({
+      page,
+      perPage,
+      checkins: checkin,
+      totalCheckins,
+      totalPage,
+    });
+  }
+}
 export default new CheckinController();

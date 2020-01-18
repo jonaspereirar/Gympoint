@@ -36,5 +36,6 @@ routes.put('/register', RegisterController.update);
 routes.delete('/register/:id', RegisterController.delete);
 
 routes.post('/students/:id/checkins', CheckinController.store);
+routes.get('/students/:id/checkins', CheckinController.index);
 
 export default routes;
