@@ -1,5 +1,4 @@
 import { addMonths, parseISO, isBefore, startOfDay } from 'date-fns';
-// import pt from 'date-fns/locale/pt';
 
 import Register from '../models/Register';
 import Plan from '../models/Plan';
@@ -121,6 +120,10 @@ class RegisterController {
     const price = plan.price * plan.duration;
 
     const registed = await Register.create({ ...req.body, end_date, price });
+
+    /**
+     * Send email
+     */
 
     const register = await registed.reload({
       include: [
